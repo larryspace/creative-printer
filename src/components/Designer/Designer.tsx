@@ -1,4 +1,6 @@
 import { useEffect, useState, useRef, useMemo } from 'react'
+import { LayoutCanvas } from '../LayoutCanvas'
+import type { PageSettings, TemplateElement } from '../../types'
 
 import styles from './Designer.module.css'
 
@@ -10,6 +12,13 @@ interface DesignerProps {
 export default function Designer({ onChange, value }: DesignerProps) {
   const [internalValue, setInternalValue] = useState(value)
   const lastValueRef = useRef(value)
+  const [elements, setElements] = useState<TemplateElement[]>([])
+  const [pageSettings, setPageSettings] = useState<PageSettings>(() => ({
+    width: 100,
+    height: 100,
+    unit: 'mm',
+    orientation: 'portrait'
+  }))
 
   useEffect(() => {
     if (value !== lastValueRef.current) {
@@ -36,10 +45,11 @@ export default function Designer({ onChange, value }: DesignerProps) {
         <span>矩形</span>
         <span>圆形</span>
       </div>
+      <LayoutCanvas elements={elements} />
       <button
         type="button"
         onClick={() => {
-          const value = Math.random().toString(16)
+          const value = JSON.stringify({});
           setInternalValue(value)
           onChange?.(value)
         }}
