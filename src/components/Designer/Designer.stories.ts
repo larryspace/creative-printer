@@ -3,7 +3,7 @@ import Designer from './Designer'
 
 export default {
   component: Designer,
-  title: 'Printer Template Designer',
+  title: 'Creative Print Designer',
 }
 
 type Story = StoryObj<typeof Designer>
