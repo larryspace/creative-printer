@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
 
 interface DesignerProps {
   onChange?: (value: string) => void
@@ -6,15 +6,34 @@ interface DesignerProps {
 }
 
 export default function Designer({ onChange, value }: DesignerProps) {
+  const [internalValue, setInternalValue] = useState(value)
+  const lastValueRef = useRef(value)
 
   useEffect(() => {
-    console.log(value)
-  }, [])
+    if (value !== lastValueRef.current) {
+      lastValueRef.current = value
+      setInternalValue(value)
+    }
+  }, [value])
+
+  const template = useMemo(() => {
+    return internalValue;
+  }, [internalValue])
 
   return (
     <>
-      <div>Designer</div>
-      <button type="button" onClick={() => onChange?.(Math.random().toString(16))}>Update</button>
+      <h4>Designer</h4>
+      <button
+        type="button"
+        onClick={() => {
+          const value = Math.random().toString(16)
+          setInternalValue(value)
+          onChange?.(value)
+        }}
+      >
+        UPDATE
+      </button>
+      <div>{template}</div>
     </>
   )
 }

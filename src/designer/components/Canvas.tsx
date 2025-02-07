@@ -6,6 +6,7 @@ import { useTemplateDesign } from '../DesignContext';
 import styles from './index.module.less';
 import Decimal from 'decimal.js';
 import elementRender from './utils';
+
 type MoveTo = (x: number, y: number, from: {
   left?: number;
   right?: number;
@@ -199,8 +200,8 @@ export default function Index({
   }, [activeElementId]);
   const paperRef = useRef<HTMLDivElement | null>(null);
   return <div className={styles.scrollContainer}>
-      <div className={styles.wrap} onMouseDown={handleMoveCanvas} style={canvasStyle}>
-        <div onClick={e => {
+    <div className={styles.wrap} onMouseDown={handleMoveCanvas} style={canvasStyle}>
+      <div onClick={e => {
         if (e.currentTarget === e.target) {
           updateActiveElementId(null);
           paperRef.current?.focus({
@@ -213,15 +214,15 @@ export default function Index({
         height: `${height}mm`,
         ...style
       }} onKeyDown={handleKeyDown} ref={paperRef}>
-          {elementList.map((el, i) => <div onFocus={() => updateActiveElementId(el.id)} tabIndex={100 + i} key={el.id} ref={e => {
+        {elementList.map((el, i) => <div onFocus={() => updateActiveElementId(el.id)} tabIndex={100 + i} key={el.id} ref={e => {
           elementsRef.current[el.id] = e;
         }} style={makeElementStyle(el)} className={styles.elementItem}>
-              {elementRender(el)}
-              <ElementCover onMouseDown={e => {
+          {elementRender(el)}
+          <ElementCover onMouseDown={e => {
             handleMouseDown(e, el);
           }} />
-            </div>)}
-          {draging ? <div style={{
+        </div>)}
+        {draging ? <div style={{
           position: 'absolute',
           left: 0,
           right: 0,
@@ -229,9 +230,9 @@ export default function Index({
           top: 0,
           zIndex: 2
         }} /> : null}
-        </div>
       </div>
-    </div>;
+    </div>
+  </div>;
 }
 const ElementCover = memo(({
   onMouseDown
